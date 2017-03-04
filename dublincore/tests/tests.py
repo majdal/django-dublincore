@@ -8,19 +8,6 @@ from dublincore.models import  QualifiedDublinCoreElement
 class QDCElementTestCase(TestCase):
     fixtures = ['DublinCore.qualifieddublincoreelementTest.json', 'DublinCore.auth.json']
 
-####    def setUp(self):
-####        super(QDCElementTestCase, self).setUp()
-####        os.environ['XTF_DATA'] = os.path.abspath(os.path.join(os.path.dirname(__file__), "data/xtf/data/"))
-####        try:
-####            dc = QualifiedDublinCoreElement.objects.get(pk=1)
-####        except QualifiedDublinCoreElement.DoesNotExist:
-####            print "++++++ LOADING QDC Elements +++++"
-####            print "++++++ DCTerms currently:", DublinCoreTerm.objects.count()
-####            from django.core.management import call_command
-####            call_command("migrate", 'xtf', '0011', fake=True)#need to fake all but relevant, they've been run but not recorded?
-####            call_command("migrate", 'xtf', '0012_copy_existing_DCT_to_DCElements')
-####            print "+++++ LOADED ", QualifiedDublinCoreElement.objects.count(), " QDCElements from existing DCTerms (elements)+++++"
-
     def testQDC(self):
         dc = QualifiedDublinCoreElement.objects.get(pk=1)
         self.assertEqual(dc.qdc, '<title>Court House,Eureka, Cal</title>')
@@ -50,12 +37,9 @@ class DCTermOACOrderingTestCase(TestCase):
         ''' Test that the DC for an object is grouped by the term type
         ie all subject terms come in a row, all titles, etc.
         '''
-#        arkobject = ARKObject.objects.get(pk=1)
         qdc = QualifiedDublinCoreElement()
         qdc.term = 'SUB'
         qdc.content = 'TEST'
-#        arkobject.QDCElements.add(qdc)
-#        dcterms = arkobject.QDCElements.all()
         dcterms = QualifiedDublinCoreElement.objects.all()
         seen = defaultdict(int)
         curterm = dcterms[0].term
@@ -63,7 +47,6 @@ class DCTermOACOrderingTestCase(TestCase):
             if curterm != qdct.term:
                 #switched or revisited
                 if seen[qdct.term] == 1:
-                    #print arkobject.QDCElements.all()
                     self.fail('Out of order term:%s' % qdct)
             curterm = qdct.term
             seen[qdct.term] = 1
@@ -95,8 +78,6 @@ class QDublinCoreElementHistoryTestCase(TestCase):
         Then change and save it. Should have history now.
         '''
         dct = QualifiedDublinCoreElement.objects.get(pk=1)
-        #for t in QualifiedDublinCoreElement.objects.all():
-        #    print t.id, t.object_id, t.content_object
         self.failUnless(len(dct.history.all()) == 0)
         dct.save()
         self.failUnless(len(dct.history.all()) == 0)

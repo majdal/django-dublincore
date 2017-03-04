@@ -9,12 +9,12 @@
       "is_active": true, 
       "is_superuser": true, 
       "is_staff": true, 
-      "last_login": "2010-11-10 17:43:21", 
+      "last_login": "2010-11-10T17:43:21Z", 
       "groups": [], 
       "user_permissions": [], 
       "password": "md5$oactestsuperuser:voro user:$fc5139797d89557003fb404ae719cd26", 
       "email": "mark.redar@ucop.edu", 
-      "date_joined": "2008-09-16 21:51:35"
+      "date_joined": "2008-09-16T21:51:35Z"
     }
   } 
 ]

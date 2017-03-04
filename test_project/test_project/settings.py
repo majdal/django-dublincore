@@ -10,13 +10,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-sqlite_dir = os.path.abspath(os.path.join(os.path.abspath(os.path.splitext(__file__)[0]), '../../db'))
-sqlite_file = os.path.join(sqlite_dir, 'dublincore_test_db.sqlite3')
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': sqlite_file,                      # Or path to database file if using sqlite3.
+        'NAME': ':memory:',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -82,7 +79,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -92,7 +88,6 @@ SECRET_KEY = '@y2dg#tosib&amp;-n9a$mp8--2cru=z!r#uw0@b*8@!5c9)1icf-%'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -123,10 +118,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    'django.contrib.admindocs',
     'dublincore',
     'test_dublincore'
 )

@@ -1,12 +1,12 @@
 from django.db import models
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation
 
 from dublincore.models import QualifiedDublinCoreElement
 
 # Create your models here.
 class Thing(models.Model):
     '''Test thing has no data just associated QDC'''
-    QDCElements = generic.GenericRelation(QualifiedDublinCoreElement)
+    QDCElements = GenericRelation(QualifiedDublinCoreElement)
 
     def title(self):
         titles = self.QDCElements.filter(term='T')

@@ -1,17 +1,8 @@
-#import logging
-#logger = logging.getLogger(__name__)
-
-###import codecs #for writing utf-8 files
-###import lxml.etree as ET
-###import json
 import xml.sax.saxutils as saxutils
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.safestring import mark_safe
-###from django.utils.datastructures import SortedDict
-###import south.modelsinspector
-###
 
 class AbstractQualifiedDublinCoreTerm(models.Model):
     ''' Abstract class for encapsulating Dublin Core metadata element. We support the extended terms list of DC.
@@ -84,14 +75,14 @@ class AbstractQualifiedDublinCoreTerm(models.Model):
     object_id = models.CharField(max_length=255)
     content_type = models.ForeignKey(ContentType)
     # Don't want this constraint here. The history terms can't be related directly
-    #content_object = generic.GenericForeignKey('content_type', 'object_id')
+    #content_object = GenericForeignKey('content_type', 'object_id')
     term = models.CharField(max_length=4, choices=DCTERMS)
     qualifier = models.CharField(max_length=40, null=True, blank=True)
     content = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return ''.join([self.get_term_display(), ':', self.qualifier, ' = ', self.content[0:50], '...' if len(self.content)>50 else '' ]) if self.qualifier else ''.join([self.get_term_display(), ' = ', self.content[0:50], '...' if len(self.content) > 50 else '' ])
 
     @property
@@ -110,9 +101,9 @@ class AbstractQualifiedDublinCoreTerm(models.Model):
         If there is a qualifier, return a dict of {q:qualifier, v:content}
         '''
         if not self.qualifier:
-            return unicode(self.content)
+            return str(self.content)
         else:
-            return dict(q=unicode(self.qualifier), v=unicode(self.content))
+            return dict(q=str(self.qualifier), v=str(self.content))
 
 
 class QualifiedDublinCoreElement(AbstractQualifiedDublinCoreTerm):
@@ -121,7 +112,7 @@ class QualifiedDublinCoreElement(AbstractQualifiedDublinCoreTerm):
     Needs to point at a live object.
     History terms will hold history for deleted objects
     '''
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def DCELEMENTS():
         element_codes = ('T', 'CR', 'SUB', 'DSC', 'PBL', 'CN', 'DT', 'TYP', 'FMT', 'ID', 'SRC', 'LG', 'REL', 'CVR', 'RT', )
