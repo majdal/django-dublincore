@@ -14,7 +14,7 @@ Quick start
 
 1. Install django-dublincore:
 
-   a. git clone https://github.com/mredar/django-dublincore.git
+   a. git clone https://github.com/mugwort-rc/django-dublincore.git
    b. cd django-dublincore
    c. python setup.py install
 
@@ -39,7 +39,7 @@ Quick start
 
 7. Add this to models you wish to add dublincore attributes to::
 
-    from django.contrib.contenttypes import generic
+    from django.contrib.contenttypes.fields import GenericRelation
     from dublincore.models import QualifiedDublinCoreElement
     ...
 
@@ -47,7 +47,7 @@ Quick start
         '''Some Thing
         with dublincore metadata attached
         '''
-    	QDCElements = generic.GenericRelation(QualifiedDublinCoreElement)
+    	QDCElements = GenericRelation(QualifiedDublinCoreElement)
 
 
 TODO:
