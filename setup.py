@@ -1,5 +1,9 @@
 import os
-from setuptools import setup
+try:
+    from distutils.core import setup, find_packages
+except ImportError:
+    from setuptools import setup, find_packages
+
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -9,7 +13,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name = 'django-dublincore',
     version = '0.1',
-    packages = ['dublincore'],
+    packages = find_packages(),
     include_package_data = True,
     license = 'BSD License - see LICENSE file', 
     description = 'A simple Django app to attach Dublin Core metadata to arbitrary Django objects',
